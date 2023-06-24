@@ -5,18 +5,29 @@ module.exports.profile = function(req, res){
 }
 
 module.exports.signIn = function(req, res){
+
+    if(req.isAuthenticated()){
+        return res.redirect('/user/profile')
+    }
+
     return res.render('user_sign_in', {
         title: 'Sign-In'
     });
 }
 
 module.exports.signUp = function(req, res){
+
+    if(req.isAuthenticated()){
+        return res.redirect('/user/profile')
+    }
+    
     return res.render('user_sign_up', {
         title: 'Sign-Up'
     });
 }
 
 module.exports.create = async function(req, res){
+
     if(req.body.password != req.body.confirm_password){
         return res.redirect('back');
     }
@@ -33,25 +44,38 @@ module.exports.create = async function(req, res){
 
 }
 
-module.exports.createSession = async function(req, res){
+// module.exports.createSession = async function(req, res){
 
-    // find the user
-    const user = await User.findOne({email: req.body.email});
+//     // find the user
+//     const user = await User.findOne({email: req.body.email});
 
-    // handle user found
-    if(user){
-        // when passwords doesn't match
-        if(user.password != req.body.password){
-            return res.redirect('back');
+//     // handle user found
+//     if(user){
+//         // when passwords doesn't match
+//         if(user.password != req.body.password){
+//             return res.redirect('back');
+//         }
+
+//         // creating the session
+//         res.cookie('user_id', user.id);
+//         return res.redirect('/user/profile');
+
+//     }else{
+//         // when user is not found
+//         return res.redirect('back');
+//     }
+
+// }
+
+module.exports.createSession = function(req, res){
+    res.redirect('/user/profile');
+}
+
+module.exports.destroy = function(req, res){
+    req.logout(function(err){
+        if(err){
+            console.log(err);
         }
-
-        // creating the session
-        res.cookie('user_id', user.id);
-        return res.redirect('/user/profile');
-
-    }else{
-        // when user is not found
-        return res.redirect('back');
-    }
-
+    });
+    res.redirect('/user/sign-in');
 }

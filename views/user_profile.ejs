@@ -54,8 +54,8 @@
     <div class="profile">
       <img class="profile-image" src="profile-image.jpg" alt="Profile Image">
       <div class="profile-info">
-        <h2>John Doe</h2>
-        <p>Email: john.doe@example.com</p>
+        <h2><%= user.username %></h2>
+        <p>Email: <%= user.email %></p>
         <p>Location: New York, USA</p>
       </div>
     </div>
@@ -68,5 +68,6 @@
       <li>Photography</li>
     </ul>
   </div>
+  <button><a href="/user/sign-out">Sign Out</a></button>
 </body>
 </html>
